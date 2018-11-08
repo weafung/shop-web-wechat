@@ -6,6 +6,7 @@ import router from './router'
 import VueLazyload from 'vue-lazyload'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import './assets/css/iconfont.css'
 
 Vue.config.productionTip = false
 

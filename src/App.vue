@@ -47,6 +47,7 @@ a:visited {
   text-decoration: none;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  color: #000000;
 }
 
 a,
