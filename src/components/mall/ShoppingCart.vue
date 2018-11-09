@@ -16,7 +16,7 @@
             </div>
             <div class="shopping-cart-item-goods">
               <div class="goods-title">
-                <router-link :to="'/detail/'+ item.goods.goodsId"> {{item.goods.title}} </router-link>
+                <router-link :to="'/goodsDetail/'+ item.goods.goodsId"> {{item.goods.title}} </router-link>
               </div>
               <div class="goods-attribute">
                 <span v-for="value in item.sku.attributes" v-bind:key="item.goods.goodsId + '_' + item.sku.skuId + '_' + value.attributeNameId + '_' + value.attributeValueId">{{ value.attributeValue }} </span>
