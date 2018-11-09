@@ -25,7 +25,7 @@ export default {
       list: [
         {title: '首页', path: '/mall/goods', icon: 'icon-homepage'},
         {title: '分类', path: '/mall/category', icon: 'icon-category'},
-        {title: '店主精选', path: '/mall/shoppingCart', icon: 'icon-yuanxuan'},
+        {title: '店主精选', path: '/mall/shopOwner', icon: 'icon-yuanxuan'},
         {title: '购物车', path: '/mall/shoppingCart', icon: 'icon-shopping-cart'},
         {title: '我的', path: '/mall/mine', icon: 'icon-mine'}
       ]

@@ -1,47 +1,52 @@
 <template>
-  <div class="shopping-cart-container">
-    <ul class="shopping-cart-box">
-      <li class="shopping-cart-item" v-for="item in data.shoppingCartDetailList" :key="item.goods.goodsId + '_' + item.sku.skuId">
-        <div class="shopping-cart-item-selected">
-          <el-radio v-model="radio"></el-radio>
-        </div>
-        <div class="shopping-cate-item-detail">
-          <div class="shopping-cart-item-image">
-            <img class="lazy-img-fadein" v-lazy="item.goods.goodsImage" />
-          </div>
-          <div class="shopping-cart-item-goods">
-            <div class="goods-title">
-              <router-link :to="'/detail/'+ item.goods.goodsId"> {{item.goods.title}} </router-link>
-            </div>
-            <div class="goods-attribute">
-              <span v-for="value in item.sku.attributes" v-bind:key="item.goods.goodsId + '_' + item.sku.skuId + '_' + value.attributeNameId + '_' + value.attributeValueId">{{ value.attributeValue }} </span>
-            </div>
-            <div class="goods-price">
-              ¥&nbsp;{{item.sku.salePrice}}
-            </div>
-            <div class="goods-count">
-              <el-input-number v-model=count[item.sku.skuId] @change="updateShoppingCartItemCount(item.goods.goodsId, item.sku.skuId)" :min="1" :max=item.goods.limitPerOrder label="购买数量" :precision="0" style="width:150px"></el-input-number>
-            </div>
-            <div class="goods-count-limit" v-if="item.goods.limitPerOrder < 2147483647">
-              限购 {{item.goods.limitPerOrder}} 件
-            </div>
-            <div class="goods-delete-button" @click="deleteShoppingCartItem(item.sku.skuId)">
-              <i class="iconfont icon-delete" />
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
 
-    <div class="checkout-box">
-      <div class="shopping-cart-select-all">
-        <el-radio v-model="radio" label="全选"></el-radio>
-      </div>
-      <div class="shopping-cart-selected-money">
-        总计： <div class="selected-money">￥ {{money}}</div>
-      </div>
-      <div class="shopping-cart-checkout">
-        结算({{selected_item_count}})
+  <div class="shopping-cart-container">
+    <div v-if="JSON.stringify(data.shoppingCartDetailList) === '[]'">
+      <div class="shopping-cart-empty-text">那么多好商品，你都不加购物车吗</div>
+    </div>
+    <div v-if="JSON.stringify(data.shoppingCartDetailList) !== '[]'">
+      <ul class="shopping-cart-box">
+        <li class="shopping-cart-item" v-for="item in data.shoppingCartDetailList" :key="item.goods.goodsId + '_' + item.sku.skuId">
+          <div class="shopping-cart-item-selected">
+            <el-radio v-model="radio"></el-radio>
+          </div>
+          <div class="shopping-cate-item-detail">
+            <div class="shopping-cart-item-image">
+              <img class="lazy-img-fadein" v-lazy="item.goods.goodsImage" />
+            </div>
+            <div class="shopping-cart-item-goods">
+              <div class="goods-title">
+                <router-link :to="'/detail/'+ item.goods.goodsId"> {{item.goods.title}} </router-link>
+              </div>
+              <div class="goods-attribute">
+                <span v-for="value in item.sku.attributes" v-bind:key="item.goods.goodsId + '_' + item.sku.skuId + '_' + value.attributeNameId + '_' + value.attributeValueId">{{ value.attributeValue }} </span>
+              </div>
+              <div class="goods-price">
+                ¥&nbsp;{{item.sku.salePrice}}
+              </div>
+              <div class="goods-count">
+                <el-input-number v-model=count[item.sku.skuId] @change="updateShoppingCartItemCount(item.goods.goodsId, item.sku.skuId)" :min="1" :max=item.goods.limitPerOrder label="购买数量" :precision="0" style="width:150px"></el-input-number>
+              </div>
+              <div class="goods-count-limit" v-if="item.goods.limitPerOrder < 2147483647">
+                限购 {{item.goods.limitPerOrder}} 件
+              </div>
+              <div class="goods-delete-button" @click="deleteShoppingCartItem(item.sku.skuId)">
+                <i class="iconfont icon-delete" />
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="checkout-box">
+        <div class="shopping-cart-select-all">
+          <el-checkbox v-model="selectAll" label="全选"></el-checkbox>
+        </div>
+        <div class="shopping-cart-selected-money">
+          总计： <div class="selected-money">￥ {{money}}</div>
+        </div>
+        <div class="shopping-cart-checkout">
+          结算({{selected_item_count}})
+        </div>
       </div>
     </div>
   </div>
@@ -57,6 +62,7 @@ export default {
       count: [],
       radio: [],
       money: 0,
+      selectAll: false,
       selected_item_count: 0
     }
   },
@@ -82,7 +88,7 @@ export default {
       })
     },
     updateShoppingCartItemCount (goodsId, skuId) {
-      this.$http.post(process.env.API_ROOT + '/api/mall/shoppingCart?goodsId=' + goodsId + '&skuId=' + skuId + '&count=' + this.count[skuId]).then(response => {
+      this.$http.put(process.env.API_ROOT + '/api/mall/shoppingCart?skuId=' + skuId + '&count=' + this.count[skuId]).then(response => {
       })
     }
   }
@@ -93,6 +99,12 @@ export default {
 .shopping-cart-container {
   background-color: #f5f5f5;
   height: 100%;
+}
+
+.shopping-cart-empty-text {
+  text-align: center;
+  height: 100%;
+  padding: 100% 0;
 }
 .shopping-cart-box {
   overflow: hidden;
