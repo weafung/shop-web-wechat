@@ -7,9 +7,11 @@ import VueLazyload from 'vue-lazyload'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import './assets/css/iconfont.css'
-
+import ElementUI from 'element-ui'
+import './assets/theme/element/index.css'
 Vue.config.productionTip = false
 
+Vue.use(ElementUI)
 Vue.use(VueLazyload, {
   preLoad: 1.3,
   error: require('./assets/images/load_default.png'),

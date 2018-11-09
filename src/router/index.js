@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Goods from '@/components/mall/Goods'
 import Mall from '@/components/Mall'
+import Goods from '@/components/mall/Goods'
+import ShoppingCart from '@/components/mall/ShoppingCart'
 
 Vue.use(Router)
 
@@ -16,6 +17,11 @@ export default new Router({
           path: 'goods',
           name: 'Goods',
           component: Goods
+        },
+        {
+          path: 'shoppingCart',
+          name: 'ShoppingCart',
+          component: ShoppingCart
         }
       ]
     }

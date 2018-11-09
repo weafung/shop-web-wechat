@@ -30,8 +30,7 @@ export default {
         {title: '我的', path: '/mall/mine', icon: 'icon-mine'}
       ]
     }
-  },
-  props: ['active']
+  }
 }
 </script>
 
@@ -42,13 +41,14 @@ export default {
 }
 
 .foot-nav {
-  background: #f5f5f5;
+  background: white;
   height: 55px;
   width: 100%;
   position: fixed;
   bottom: 0;
   display: flex;
   padding: 10px;
+  text-align: center;
 }
 
 .foot-nav-item-container {
@@ -62,7 +62,7 @@ export default {
 }
 
 .foot-nav-item-active {
-  color: #b6ad00;
+  color: #f5345e;
 }
 
 .foot {
