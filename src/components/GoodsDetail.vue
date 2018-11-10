@@ -20,7 +20,7 @@
           ￥{{(goodsDetail.skuList)[0].marketPrice}}
         </div>
         <div class="goods-share">
-          <i class="iconfont icon-homepage" />
+          <i class="iconfont icon-share" />
           分享
         </div>
       </div>
@@ -33,12 +33,12 @@
       <div class="foot-button-blank-block">
       </div>
       <div class="foot-button-container">
-        <span class="homepage-button" href="/">
-          <i class="iconfont icon-homepage" /> 首页
-        </span>
-        <span class="shopping-cart-button">
-          <i class="iconfont icon-shopping-cart" /> 购物车
-        </span>
+        <router-link to="/" class="homepage-button">
+            <i class="iconfont icon-homepage" /> 首页
+        </router-link>
+        <router-link to="/mall/shoppingCart" class="shopping-cart-button">
+            <i class="iconfont icon-shopping-cart" /> 购物车
+        </router-link>
         <span class="add-shopping-cart">
           加入购物车
         </span>
@@ -175,14 +175,15 @@ img {
   line-height: 30px;
   background-color: white;
   padding: 0 5px;
+  font-weight: 300;
 }
 
 .foot-button-blank-block {
-  height: 50px;
+  height: 53px;
+  background-color: #f5f5f5;
 }
 
 .foot-button-container {
-  padding-left: 2%;
   position: fixed;
   bottom: 0;
   background-color: white;
@@ -196,17 +197,27 @@ img {
   display: flex;
   flex-direction: column;
   text-align: center;
-  width: 20%;
-  padding-top: 8px;
+  padding-top: 7px;
+  padding-bottom: 1px;
 }
 
+.homepage-button {
+  width: 16%;
+  padding-left: 1%;
+}
+
+.shopping-cart-button {
+  width: 17%;
+  padding-right: 3%;
+}
 .add-shopping-cart {
   text-align: center;
   line-height: 50px;
   height: 50px;
   background-color: #404040;
   color: white;
-  padding: 0 6%;
+  padding: 0 5%;
+  width: 35%;
 }
 
 .buy-now {
@@ -215,6 +226,7 @@ img {
   height: 50px;
   background-color: #f23030;
   color: white;
-  padding: 0 6%;
+  padding: 0 5%;
+  width: 32%;
 }
 </style>

@@ -49,6 +49,7 @@ export default {
   display: flex;
   padding: 10px;
   text-align: center;
+  font-size: 14px;
 }
 
 .foot-nav-item-container {

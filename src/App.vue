@@ -25,7 +25,7 @@ html, body, #app {
   margin: 0%
 }
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'PingFang SC', 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* text-align: center; */
@@ -37,6 +37,7 @@ body {
     'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-text-size-adjust: none;
+  background-color: #f5f5f5;
 }
 
 a,
@@ -69,5 +70,11 @@ input[type='reset'] {
 
 textarea {
   -webkit-appearance: none;
+}
+
+.empty-data-msg {
+  text-align: center;
+  height: 100%;
+  padding: 100% 0;
 }
 </style>

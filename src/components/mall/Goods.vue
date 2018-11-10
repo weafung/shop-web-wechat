@@ -24,44 +24,7 @@ export default {
   name: 'Goods',
   data () {
     return {
-      data: [
-        {
-          'firstCategoryId': 1,
-          'freeDelivery': false,
-          'goodsId': 123456,
-          'goodsImage': 'https://haitao.nosdn2.127.net/onlineigdedjll13723.jpg?imageView&thumbnail=188x0&quality=85',
-          'introduce': '介绍',
-          'limitPerOrder': 2147483647,
-          'salePrice': 32,
-          'secondCategoryId': 2,
-          'thirdCategoryId': 3,
-          'title': '轻奢·蕨之语提花四件套'
-        },
-        {
-          'firstCategoryId': 1,
-          'freeDelivery': false,
-          'goodsId': 123456,
-          'goodsImage': 'https://haitao.nosdn2.127.net/onlineigdedjll13723.jpg?imageView&thumbnail=188x0&quality=85',
-          'introduce': '介绍',
-          'limitPerOrder': 2147483647,
-          'salePrice': 32,
-          'secondCategoryId': 2,
-          'thirdCategoryId': 3,
-          'title': '轻奢·蕨之语提花四件套'
-        },
-        {
-          'firstCategoryId': 1,
-          'freeDelivery': false,
-          'goodsId': 123456,
-          'goodsImage': 'https://haitao.nosdn2.127.net/onlineigdedjll13723.jpg?imageView&thumbnail=188x0&quality=85',
-          'introduce': '介绍',
-          'limitPerOrder': 2147483647,
-          'salePrice': 32,
-          'secondCategoryId': 2,
-          'thirdCategoryId': 3,
-          'title': '轻奢·蕨之语提花四件套'
-        }
-      ]
+      data: []
     }
   },
   mounted () {

@@ -1,5 +1,4 @@
 <template>
-
   <div class="shopping-cart-container">
     <div v-if="JSON.stringify(data.shoppingCartDetailList) === '[]'">
       <div class="shopping-cart-empty-text">那么多好商品，你都不加购物车吗</div>
@@ -25,7 +24,7 @@
                 ¥&nbsp;{{item.sku.salePrice}}
               </div>
               <div class="goods-count">
-                <el-input-number v-model=count[item.sku.skuId] @change="updateShoppingCartItemCount(item.goods.goodsId, item.sku.skuId)" :min="1" :max=item.goods.limitPerOrder label="购买数量" :precision="0" style="width:150px"></el-input-number>
+                <el-input-number v-model=count[item.sku.skuId] @change="updateShoppingCartItemCount(item.goods.goodsId, item.sku.skuId)" :min="1" :max=item.goods.limitPerOrder label="购买数量" :precision="0" style="width:120px"></el-input-number>
               </div>
               <div class="goods-count-limit" v-if="item.goods.limitPerOrder < 2147483647">
                 限购 {{item.goods.limitPerOrder}} 件
@@ -37,6 +36,7 @@
           </div>
         </li>
       </ul>
+      <div class="blank-block"></div>
       <div class="checkout-box">
         <div class="shopping-cart-select-all">
           <el-checkbox v-model="selectAll" label="全选"></el-checkbox>
@@ -70,9 +70,6 @@ export default {
     this.fetchShoppingCartData()
   },
   methods: {
-    handleChange (value) {
-      console.log(value)
-    },
     fetchShoppingCartData () {
       this.$http.get(process.env.API_ROOT + '/api/mall/shoppingCart').then(response => {
         this.data = response.data.data
@@ -112,7 +109,7 @@ export default {
 
 .shopping-cart-item {
   clear: both;
-  height: 140px;
+  /* height: 25%; */
   background-color: white;
   margin: 10px 0px;
   /* padding: 10px 0px; */
@@ -132,7 +129,7 @@ export default {
   float: left;
   width: 30%;
   padding: 5px 10px;
-  margin: 20px auto;
+  margin: 20px auto 10px auto;
 }
 
 .shopping-cart-item-goods {
@@ -142,7 +139,7 @@ export default {
 }
 
 .goods-title {
-  padding: 10px 0px 10px 0px;
+  padding: 5px 0px 5px 0px;
 }
 
 .goods-count {
@@ -164,7 +161,7 @@ export default {
 
 .goods-delete-button {
   float: right;
-  margin: 10px 20px;
+  margin: 10px 20px 5px 20px;
 }
 
 .icon-delete {
@@ -185,8 +182,13 @@ a {
   color: #f23030;
   line-height: 25px;
   display: inline;
-  margin: 25px;
+  margin: 5%;
   line-height: 38px;
+}
+
+.blank-block {
+  background-color: #f5f5f5;
+  height: 113px;
 }
 
 .checkout-box {
@@ -195,8 +197,9 @@ a {
   width: 100%;
   background-color: white;
   margin: auto auto;
-  font-size: 20px;
+  font-size: 16px;
   border-bottom: 2px #f5f5f5 solid;
+  z-index: 5;
 }
 
 .shopping-cart-select-all,
