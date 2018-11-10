@@ -34,10 +34,10 @@
       </div>
       <div class="foot-button-container">
         <router-link to="/" class="homepage-button">
-            <i class="iconfont icon-homepage" /> 首页
+          <i class="iconfont icon-homepage" /> 首页
         </router-link>
         <router-link to="/mall/shoppingCart" class="shopping-cart-button">
-            <i class="iconfont icon-shopping-cart" /> 购物车
+          <i class="iconfont icon-shopping-cart" /> 购物车
         </router-link>
         <span class="add-shopping-cart">
           加入购物车
@@ -120,12 +120,15 @@ export default {
 
 .goods-image {
   margin: 10px auto;
-  width: 70%;
+  height: 400px;
+  width: 400px;
 }
 
 img {
   max-width: 100%;
   max-height: 100%;
+  height: 400px;
+  width: 400px;
 }
 
 .goods-price-box {
