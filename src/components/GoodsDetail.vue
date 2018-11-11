@@ -1,13 +1,11 @@
 <template>
   <div id="goods-detail">
     <div v-if="JSON.stringify(goodsDetail) !== '{}' ">
-      <div v-if="JSON.stringify(goodsDetail.goodsImageList) !== '[]'">
+      <div class="goods-image-container" v-if="JSON.stringify(goodsDetail.goodsImageList) !== '[]'">
         <el-carousel indicator-position="outside" arrow="always" :interval="2500">
           <el-carousel-item v-for="(value, key, index) in goodsDetail.goodsImageList" :key="index">
-            <div class="goods-image-container">
-              <div class="goods-image">
-                <img v-lazy="value.imageUrl" />
-              </div>
+            <div class="goods-image">
+              <img v-lazy="value.imageUrl" />
             </div>
           </el-carousel-item>
         </el-carousel>
@@ -117,10 +115,11 @@ export default {
   background-color: #f5f5f5;
   height: 100%;
 }
-
+.goods-image-container {
+  margin: 10px auto 0px;
+}
 .goods-image {
-  margin: 10px auto;
-  height: 400px;
+  height: 300px;
   width: 400px;
 }
 

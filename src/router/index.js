@@ -13,6 +13,14 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
+      path: '/',
+      name: 'Mall',
+      component: Mall,
+      meta: {
+        title: '友品'
+      }
+    },
+    {
       path: '/mall',
       name: 'Mall',
       component: Mall,
@@ -26,7 +34,7 @@ export default new Router({
           component: Goods
         },
         {
-          path: 'category',
+          path: 'category/:categoryId?',
           name: 'Category',
           component: Category,
           meta: {

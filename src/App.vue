@@ -77,4 +77,8 @@ textarea {
   height: 100%;
   padding: 100% 0;
 }
+
+.foot-nav-blank-block {
+  height: 55px;
+}
 </style>

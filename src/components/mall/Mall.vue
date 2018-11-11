@@ -1,7 +1,6 @@
 <template>
   <div id="mall">
     <router-view/>
-    <div class="foot"></div>
     <div class="foot-nav">
         <template v-for="(item,index) in list">
           <div class="foot-nav-item-container" v-bind:key=index>
@@ -65,9 +64,5 @@ export default {
 
 .foot-nav-item-active {
   color: #f5345e;
-}
-
-.foot {
-  height: 55px;
 }
 </style>
