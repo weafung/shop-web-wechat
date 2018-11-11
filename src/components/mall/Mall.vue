@@ -50,6 +50,7 @@ export default {
   padding: 10px;
   text-align: center;
   font-size: 14px;
+  z-index: 5;
 }
 
 .foot-nav-item-container {
