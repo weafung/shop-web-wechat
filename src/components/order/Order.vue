@@ -7,16 +7,16 @@
       <router-link class="header-nav-item" active-class='header-nav-item-active' to="/order/2" replace>待收货</router-link>
     </div>
     <div class="order-list-container" v-if="JSON.stringify(orderList) !== '[]'">
-      <div class="order-list-item" v-for="(gorder, key, index) in orderList" v-bind:key="'gorder' + index">
+      <div class="order-list-item" v-for="gorder in orderList" v-bind:key="gorder.gorderDTO.gorderId">
         <div class="order-list-item-header">
           <span class="date">
             {{gorder.gorderDTO.orderTime}}
           </span>
           <span class="status" v-if="gorder.gorderDTO.status == 0">待付款</span>
-          <span class="status" v-if="gorder.gorderDTO.status == 1">待发货</span>
-          <span class="status" v-if="gorder.gorderDTO.status == 2">待收货</span>
+          <span class="status" v-else-if="gorder.gorderDTO.status == 1">待发货</span>
+          <span class="status" v-else-if="gorder.gorderDTO.status == 2">待收货</span>
         </div>
-        <div class="order-list-item-body" v-for="(sorder, key, index) in gorder.sorderDTOList" v-bind:key="'sorder' + index">
+        <div class="order-list-item-body" v-for="sorder in gorder.sorderDTOList" v-bind:key="sorder.orderId">
           <span class="goods-image">
             <img class="lazy-img-fadein" v-lazy="img" />
           </span>
@@ -29,6 +29,24 @@
             </div>
             <div class="goods-count">
               x{{sorder.count}}
+            </div>
+          </div>
+        </div>
+        <div class="order-list-item-footer">
+          <div class="goods-all-price-count">
+            <div class="goods-all-count">
+              共 1 件
+            </div>
+            <div class="goods-all-price">
+              应付总额 ￥197
+            </div>
+          </div>
+          <div class="order-action-menu">
+            <div class="order-action-white-button">
+              订单跟踪
+            </div>
+            <div class="order-action-red-button">
+              确认收货
             </div>
           </div>
         </div>
@@ -113,23 +131,26 @@ export default {
       overflow: auto;
       border-bottom: 1px #f5f5f5 solid;
       padding: 5px 3px;
+      display: flex;
       .goods-image {
+        display: flex;
+        flex: 2;
         clear: both;
-        float: left;
-        width: 30%;
         img {
           padding: 10px;
           max-width: 100%;
           max-height: 100%;
           height: 100px;
           width: 100px;
+          margin: auto;
         }
       }
       .goods-detail {
-        float: left;
+        flex: 4;
         overflow: auto;
       }
       .goods-price-count {
+        flex: 1;
         float: right;
         display: flex;
         flex-direction: column;
@@ -137,6 +158,40 @@ export default {
         text-align: right;
         .goods-count {
           color: gray;
+        }
+      }
+    }
+    .order-list-item-footer {
+      .goods-all-price-count,
+      .order-action-menu {
+        display: flex;
+        justify-content: flex-end;
+      }
+      .goods-all-price-count{
+        line-height: 2.5em;
+        height: 2.5em;
+        .goods-all-price, .goods-all-count {
+          margin-left: 2.5em;
+        }
+      }
+
+      .order-action-menu {
+        margin-right: 0.25em;
+        .order-action-white-button,
+        .order-action-red-button {
+          border: 1px solid;
+          border-radius: 20px;
+          padding: 0.25em 0.75em;
+          margin-left: 0.5em;
+        }
+
+        .order-action-white-button {
+          border-color: #e6e6e6;
+        }
+
+        .order-action-red-button {
+          color: white;
+          background-color: #e31436;
         }
       }
     }
