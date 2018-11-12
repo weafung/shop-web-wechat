@@ -6,8 +6,8 @@
           <label :for="'radio' + item.addressId">
             <div class="left" v-if="select">
               <input type="radio" v-model="addressId" :value="item.addressId" :id="'radio' + item.addressId" />
-              <img v-if="addressId === item.addressId" alt="" src="../../assets/images/gou.png">
-              <img v-else-if="addressId !== item.addressId" alt="" src="../../assets/images/quan.png">
+              <img v-if="addressId == item.addressId" alt="" src="../../assets/images/gou.png">
+              <img v-else-if="addressId != item.addressId" alt="" src="../../assets/images/quan.png">
             </div>
             <div class="center">
               <div class="address-who">
@@ -52,7 +52,7 @@ export default {
       this.$http.get(process.env.API_ROOT + '/api/mall/address/list/').then(response => {
         this.addressList = response.data.data
         this.addressId = Store.fetchAddressId()
-        console.log(this.$route.params.action)
+        console.log(this.addressId)
         // this.addressSelectedStatus = {}
         // for (let index in this.addressList) {
         //   this.addressSelectedStatus[this.addressList[index].addressId] = { 'selected': false, 'count': 1 }
@@ -60,24 +60,15 @@ export default {
       }).catch(error => {
         console.log(error)
       })
-    },
-    selectedAddressChange (addressId) {
-      if (this.addressSelectedStatus[addressId].selected === true) {
-        this.count++
-      }
-      // this.addressSelectedStatus = {}
-      // this.addressSelectedStatus.push({addressId: {'selected': this.addressSelectedStatus[addressId].selected}})
-      console.log(addressId)
-      console.log(this.addressSelectedStatus)
-      console.log(this.addressSelectedStatus[addressId])
-      console.log(this.addressSelectedStatus[addressId].selected)
     }
   },
   watch: {
     addressId (newAddressId, oldAddressId) {
       if (oldAddressId !== 0) {
         Store.saveAddressId(newAddressId)
-        this.$router.go(-1)
+        // this.$router.go(-1)
+        let vm = this
+        setTimeout(() => vm.$router.go(-1), 300)
       }
     }
   }

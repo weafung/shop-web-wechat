@@ -51,7 +51,7 @@
         <div class="shopping-cart-selected-money">
           总计： <div class="selected-money">￥ {{money}}</div>
         </div>
-        <div class="shopping-cart-checkout-button" @click="checkOut">
+        <div class="shopping-cart-checkout-button" :class="selectedNum <= 0 ? 'bg-color-gray' : 'bg-color-red'" @click="checkOut">
           结算({{selectedNum}})
         </div>
       </div>
@@ -87,12 +87,14 @@ export default {
   },
   methods: {
     initShoppingCartData () {
+      this.money = 0
+
       this.$http.get(process.env.API_ROOT + '/api/mall/shoppingCart').then(response => {
         this.data = response.data.data
         let detailList = this.data.shoppingCartDetailList
         this.goodsSelectedStatus = {}
         for (let index in detailList) {
-          this.goodsSelectedStatus[detailList[index].sku.skuId] = { 'selected': false, 'goodsId': detailList[index].goods.goodsId, 'count': detailList[index].count }
+          this.goodsSelectedStatus[detailList[index].sku.skuId] = { 'selected': false, 'goodsId': detailList[index].goods.goodsId, 'count': detailList[index].count, 'salePrice': detailList[index].sku.salePrice }
           this.notSelectedNum++
         }
         this.goodsNum = this.notSelectedNum
@@ -131,10 +133,18 @@ export default {
       // console.log(this.notSelectedNum)
       // console.log(this.selectAllGoods)
       // console.log(this.goodsSelectedStatus)
+      this.money = 0
+      for (let index in this.goodsSelectedStatus) {
+        if (this.goodsSelectedStatus[index].selected) {
+          this.money += this.goodsSelectedStatus[index].count * this.goodsSelectedStatus[index].salePrice
+        }
+      }
       Store.save(this.goodsSelectedStatus)
       console.log(Store.fetch())
     },
     selectAllGoodsChange () {
+      this.money = 0
+
       if (this.selectAllGoods) {
         this.selectedNum = this.goodsNum
         this.notSelectedNum = 0
@@ -144,6 +154,10 @@ export default {
       }
       for (let index in this.goodsSelectedStatus) {
         this.goodsSelectedStatus[index].selected = this.selectAllGoods
+
+        if (this.selectAllGoods) {
+          this.money += this.goodsSelectedStatus[index].count * this.goodsSelectedStatus[index].salePrice
+        }
       }
       // console.log(this.selectedNum)
       // console.log(this.notSelectedNum)
@@ -296,8 +310,14 @@ label {
   .shopping-cart-checkout-button {
     flex: 2;
     color: white;
-    background-color: #f23030;
+    // background-color: #f23030;
     text-align: center;
   }
+}
+.bg-color-gray {
+  background-color: #5d5f63;
+}
+.bg-color-red {
+  background-color: #f23030;
 }
 </style>
