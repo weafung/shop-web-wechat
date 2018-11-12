@@ -22,7 +22,7 @@
         </div>
         <div class="goods-detail">
           <div class="goods-title">
-            <router-link :to="'/goodsDetail/'+ item.goods.goodsId"> {{item.goods.title}} </router-link>
+            {{item.goods.title}}
           </div>
           <div class="goods-attribute">
             <span v-for="value in item.sku.attributes" v-bind:key="item.goods.goodsId + '_' + item.sku.skuId + '_' + value.attributeNameId + '_' + value.attributeValueId">{{ value.attributeValue }} </span>
@@ -92,8 +92,13 @@ export default {
     this.fetchAddressData()
 
     for (let index in this.data) {
-      this.skuId.push(index)
+      if (this.data[index].selected) {
+        this.skuId.push(index)
+      } else {
+        delete this.data[index]
+      }
     }
+    Store.save(this.data)
 
     this.fetchGoodsData()
 
