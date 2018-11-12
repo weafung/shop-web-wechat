@@ -6,7 +6,9 @@ import ShoppingCart from '@/components/mall/ShoppingCart'
 import Mine from '@/components/mall/Mine'
 import Category from '@/components/mall/Category'
 import GoodsDetail from '@/components/GoodsDetail'
-import Order from '@/components/order/Order'
+import OrderList from '@/components/order/List'
+import CheckOut from '@/components/order/CheckOut'
+import AddressList from '@/components/address/List'
 
 Vue.use(Router)
 
@@ -14,10 +16,18 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Mall',
+      name: 'Root',
       component: Mall,
       meta: {
         title: '友品'
+      }
+    },
+    {
+      path: '/address/list/:action?',
+      name: 'AddressList',
+      component: AddressList,
+      meta: {
+        title: '地址管理'
       }
     },
     {
@@ -68,11 +78,19 @@ export default new Router({
       }
     },
     {
-      path: '/order/:status?',
-      name: 'Order',
-      component: Order,
+      path: '/order/list/:status?',
+      name: 'OrderList',
+      component: OrderList,
       meta: {
         title: '我的订单'
+      }
+    },
+    {
+      path: '/order/checkOut',
+      name: 'CheckOut',
+      component: CheckOut,
+      meta: {
+        title: '确认订单'
       }
     }
   ]

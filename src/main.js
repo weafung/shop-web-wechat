@@ -9,6 +9,7 @@ import VueAxios from 'vue-axios'
 import './assets/css/iconfont.css'
 import ElementUI from 'element-ui'
 import './assets/theme/element/index.css'
+
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)

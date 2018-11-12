@@ -38,7 +38,7 @@ export default {
       categoryId: 0
     }
   },
-  mounted () {
+  created () {
     this.fetchCategoryData()
   },
   watch: {

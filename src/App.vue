@@ -18,11 +18,13 @@ export default {
   box-sizing: border-box;
 }
 
-html, body, #app {
+html,
+body,
+#app {
   height: 100%;
   /* margin-top: 0px;
   margin-bottom: 0px; */
-  margin: 0%
+  margin: 0%;
 }
 #app {
   font-family: 'PingFang SC', 'Avenir', Helvetica, Arial, sans-serif;

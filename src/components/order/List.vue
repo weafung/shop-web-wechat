@@ -1,10 +1,10 @@
 <template>
   <div id="order">
     <div class="header-nav">
-      <router-link class="header-nav-item" active-class='header-nav-item-active' to="/order/-1" replace>全部</router-link>
-      <router-link class="header-nav-item" active-class='header-nav-item-active' to="/order/0" replace>待付款</router-link>
-      <router-link class="header-nav-item" active-class='header-nav-item-active' to="/order/1" replace>待发货</router-link>
-      <router-link class="header-nav-item" active-class='header-nav-item-active' to="/order/2" replace>待收货</router-link>
+      <router-link class="header-nav-item" active-class='header-nav-item-active' to="/order/list/-1" replace>全部</router-link>
+      <router-link class="header-nav-item" active-class='header-nav-item-active' to="/order/list/0" replace>待付款</router-link>
+      <router-link class="header-nav-item" active-class='header-nav-item-active' to="/order/list/1" replace>待发货</router-link>
+      <router-link class="header-nav-item" active-class='header-nav-item-active' to="/order/list/2" replace>待收货</router-link>
     </div>
     <div class="order-list-container" v-if="JSON.stringify(orderList) !== '[]'">
       <div class="order-list-item" v-for="gorder in orderList" v-bind:key="gorder.gorderDTO.gorderId">

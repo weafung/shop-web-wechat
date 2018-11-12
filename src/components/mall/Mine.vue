@@ -24,18 +24,24 @@
         <div class="my-order">
           我的订单
         </div>
-        <router-link class="see-all-order" to="/order/-1"> 查看全部 > </router-link>
+        <router-link class="see-all-order" to="/order/list/-1"> 查看全部 > </router-link>
 
       </div>
       <div class="order-button-body">
-        <router-link class="order-button-item" to="/order/-1"> <i class="iconfont icon-all-orders" />全部订单 </router-link>
-        <router-link class="order-button-item" to="/order/0"> <i class="iconfont icon-wait-pay" /> 待付款 </router-link>
-        <router-link class="order-button-item" to="/order/1"> <i class="iconfont icon-wait-send" /> 待发货 </router-link>
-        <router-link class="order-button-item" to="/order/2"> <i class="iconfont icon-wait-receive" /> 待收货 </router-link>
-        <router-link class="order-button-item" to="/order/3"> <i class="iconfont icon-withdraw" /> 退货退款 </router-link>
+        <router-link class="order-button-item" to="/order/list/-1"> <i class="iconfont icon-all-orders" />全部订单 </router-link>
+        <router-link class="order-button-item" to="/order/list/0"> <i class="iconfont icon-wait-pay" /> 待付款 </router-link>
+        <router-link class="order-button-item" to="/order/list/1"> <i class="iconfont icon-wait-send" /> 待发货 </router-link>
+        <router-link class="order-button-item" to="/order/list/2"> <i class="iconfont icon-wait-receive" /> 待收货 </router-link>
+        <router-link class="order-button-item" to="/order/list/3"> <i class="iconfont icon-withdraw" /> 退货退款 </router-link>
       </div>
     </div>
     <div class="menu-container">
+      <router-link :to="'/address/list'">
+        <div class="menu-item">
+          地址管理
+        </div>
+      </router-link>
+
       <div class="menu-item">
         联系客服
       </div>
