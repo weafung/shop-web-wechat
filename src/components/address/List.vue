@@ -21,6 +21,9 @@
           </label>
           <div class="right">
             <router-link class="edit-button" :to="'/address/edit/' + item.addressId">编辑</router-link>
+            <div class="delete-address" @click="deleteAddress(item.addressId)">
+              <i class="iconfont icon-delete" />
+            </div>
           </div>
         </div>
       </div>
@@ -59,6 +62,19 @@ export default {
         // }
       }).catch(error => {
         console.log(error)
+      })
+    },
+    deleteAddress (addressId) {
+      this.$confirm('删除此地址?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        this.$http.delete(process.env.API_ROOT + '/api/mall/address', { data: [addressId] }).then(response => {
+          this.fetchData()
+          this.$toast.center('删除成功')
+        })
       })
     }
   },
@@ -114,11 +130,19 @@ export default {
           height: 1.1rem;
           line-height: 1.1rem;
           font-size: 0.8rem;
+          overflow: -webkit-paged-x;
         }
       }
       .right {
-        flex: 1;
+        flex: 1.5;
         margin: auto;
+        display: flex;
+        .delete-address {
+          flex: 0.5;
+        }
+        .edit-button {
+          flex: 1;
+        }
       }
     }
   }

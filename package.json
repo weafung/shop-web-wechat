@@ -23,7 +23,8 @@
     "vue": "^2.5.2",
     "vue-axios": "^2.1.4",
     "vue-lazyload": "^1.2.6",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vue2-toast": "^2.0.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

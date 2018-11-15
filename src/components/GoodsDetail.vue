@@ -29,14 +29,14 @@
         {{goodsDetail.introduce}}
       </div>
       <div class="spec-container" v-if="showSpecContainer">
-        <div class="spec-mask" @click="hidePanel"></div>
+        <div class="spec-mask" @click="() => {showSpecContainer = false; add2ShoppingCart=false; buyNow = false;} "></div>
         <div class="spec-body">
           <div class="spec-item-box" v-for="item in Array.from(attributeNameSet)" :key="'attributeName_' + item">
             <div class="spec-item-title">
               {{item}}
             </div>
             <div class="spec-item-attr-box">
-              <div class="spec-item-attr" @click="clickAttr(item, attr)" :class="selected[item] == attr ? 'red' : allowKeyValue[item][attr] ? 'white' : 'gray'" v-for="attr in Array.from(attributeNameValue[item])" :key="'attributeNameValue' + attr">
+              <div class="spec-item-attr" @click="changeSpecValue(item, attr)" :class="selected[item] == attr ? 'red' : allowKeyValue[item][attr] ? 'white' : 'gray'" v-for="attr in Array.from(attributeNameValue[item])" :key="'attributeNameValue' + attr">
                 {{attr}}
               </div>
             </div>
@@ -50,7 +50,11 @@
             </div>
           </div>
         </div>
+        <div class="confirm" @click="confirmAction">
+          确定
+        </div>
       </div>
+
       <div class="foot-button-blank-block">
       </div>
       <div class="foot-button-container">
@@ -60,10 +64,10 @@
         <router-link to="/mall/shoppingCart" class="shopping-cart-button">
           <i class="iconfont icon-shopping-cart" /> 购物车
         </router-link>
-        <span class="add-shopping-cart" @click="showPanel">
+        <span class="add-shopping-cart" @click="() => {showSpecContainer = true; add2ShoppingCart=true; buyNow=false;} ">
           加入购物车
         </span>
-        <span class="buy-now" @click="showPanel">
+        <span class="buy-now" @click="() => {showSpecContainer = true; add2ShoppingCart=false; buyNow=true;} ">
           立即购买
         </span>
       </div>
@@ -73,6 +77,8 @@
 </template>
 
 <script>
+import Store from '../common/Store'
+
 export default {
   name: 'goods-detail',
   data () {
@@ -127,33 +133,16 @@ export default {
 
       skuId: 0,
       count: 1,
-      showSpecContainer: false
+      showSpecContainer: false,
+
+      buyNow: false,
+      add2ShoppingCart: false
     }
   },
   mounted () {
     this.fetchGoodsDetailData()
   },
   methods: {
-    showPanel () {
-      this.showSpecContainer = true
-    },
-    hidePanel () {
-      this.showSpecContainer = false
-    },
-    calcDescartes (array) {
-      if (array.length < 2) return array[0] || []
-      return [].reduce.call(array, function (col, set) {
-        var res = []
-        col.forEach(function (c) {
-          set.forEach(function (s) {
-            var t = [].concat(Array.isArray(c) ? c : [c])
-            t.push(s)
-            res.push(t)
-          })
-        })
-        return res
-      })
-    },
     fetchGoodsDetailData () {
       this.$http.get(process.env.API_ROOT + '/api/mall/goods?goodsId=' + this.$route.params.goodsId).then(response => {
         this.goodsDetail = response.data.data
@@ -171,23 +160,32 @@ export default {
           }
           this.skuItems[sku.skuId] = item.slice(0, -1)
         }
-        console.log('skuItems:')
-        console.log(this.skuItems)
-
-        console.log(this.attributeNameSet)
       })
     },
-    clickAttr (item, attr) {
-      if (!this.allowKeyValue[item][attr]) {
+    confirmAction () {
+      if (this.add2ShoppingCart && this.count > 0 && this.skuId !== 0) {
+        this.$http.post(process.env.API_ROOT + '/api/mall/shoppingCart?goodsId=' + this.goodsDetail.goodsId + '&skuId=' + this.skuId + '&count=' + this.count).then(response => {
+          this.showSpecContainer = false
+          this.$toast.center('添加成功')
+        })
+      } else if (this.buyNow) {
+        let item = {}
+        item[this.skuId] = { 'selected': true, 'goodsId': this.skuId, 'count': this.count }
+        Store.save(item)
+        this.$router.push('/order/checkout')
+      }
+    },
+    changeSpecValue (specKey, specValue) {
+      if (!this.allowKeyValue[specKey][specValue]) {
         return
       }
 
       this.selected = Object.assign({}, this.selected)
 
-      if (this.selected[item] === attr) {
-        delete this.selected[item]
+      if (this.selected[specKey] === specValue) {
+        delete this.selected[specKey]
       } else {
-        this.selected[item] = attr
+        this.selected[specKey] = specValue
       }
 
       for (let key of this.attributeNameSet) {
@@ -235,8 +233,6 @@ export default {
       }
 
       if (Object.keys(this.selected).length === this.attributeNameSet.size) {
-        console.log('ok')
-        console.log(this.selected)
         let selectedItems = []
         for (let selectedKey in this.selected) {
           selectedItems.push(selectedKey + ':' + this.selected[selectedKey])
@@ -255,7 +251,6 @@ export default {
             break
           }
         }
-        console.log(this.skuId)
       }
     }
   }
@@ -402,7 +397,10 @@ export default {
   }
   .spec-body {
     background: #fff;
-    flex: 5;
+    display: flex;
+    flex-direction: column;
+    flex: 3.5;
+    padding-top: 1em;
     .spec-item-box {
       display: flex;
       flex-wrap: wrap;
@@ -442,6 +440,14 @@ export default {
         }
       }
     }
+  }
+  .confirm {
+    background-color: #f23030;
+    color: white;
+    width: 100%;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    text-align: center;
   }
 }
 </style>

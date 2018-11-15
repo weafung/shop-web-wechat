@@ -9,6 +9,7 @@ import GoodsDetail from '@/components/GoodsDetail'
 import OrderList from '@/components/order/List'
 import CheckOut from '@/components/order/CheckOut'
 import AddressList from '@/components/address/List'
+import Address from '@/components/address/Address'
 
 Vue.use(Router)
 
@@ -26,6 +27,14 @@ export default new Router({
       path: '/address/list/:action?',
       name: 'AddressList',
       component: AddressList,
+      meta: {
+        title: '地址管理'
+      }
+    },
+    {
+      path: '/address/:action?/:addressId?',
+      name: 'Address',
+      component: Address,
       meta: {
         title: '地址管理'
       }

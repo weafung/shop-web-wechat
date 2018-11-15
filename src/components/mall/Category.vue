@@ -1,28 +1,48 @@
 <template>
   <div id="category">
-    <div class="category-container" v-if="JSON.stringify(categories) === '{}'">
-      <div class="shopping-cart-empty-text">那么多好商品，你都不加购物车吗</div>
-    </div>
-    <div class="category-container" v-if="JSON.stringify(categories) !== '{}'">
-      <div class="category-nav">
-        <div v-for="firstNavItem in categories.children" :key="'Category'+firstNavItem.categoryId">
-          <router-link class="category-nav-item" replace :to="{path: '/mall/category/' + firstNavItem.categoryId}" active-class="category-nav-item-active">
-            {{firstNavItem.title}}
-          </router-link>
-        </div>
-        <div class="foot-nav-blank-block"></div>
-      </div>
-      <div class="category-content">
-        <div class="second-category-container" v-for="secondNavItem in secondCategories[categoryId]" :key="'SecondCategory'+secondNavItem.categoryId">
-          <div class="second-category-title">{{secondNavItem.title}}</div>
-          <div class="third-category-container">
-            <div class="third-category-item" v-for="thirdNavItem in secondNavItem.children" :key="'ThirdCategory'+thirdNavItem.categoryId">
-              <img class="lazy-img-fadein" v-lazy="thirdNavItem.image" />
-              <div class="third-category-title"> {{thirdNavItem.title}} </div>
-            </div>
+    <div v-if="isLoading">
+      <div class="loader">
+        <div class="loader-inner">
+          <div class="loader-line-wrap">
+            <div class="loader-line"></div>
+          </div>
+          <div class="loader-line-wrap">
+            <div class="loader-line"></div>
+          </div>
+          <div class="loader-line-wrap">
+            <div class="loader-line"></div>
+          </div>
+          <div class="loader-line-wrap">
+            <div class="loader-line"></div>
+          </div>
+          <div class="loader-line-wrap">
+            <div class="loader-line"></div>
           </div>
         </div>
-        <div class="foot-nav-blank-block"></div>
+      </div>
+    </div>
+    <div v-show="!isLoading">
+      <div class="category-container" v-if="JSON.stringify(categories) !== '{}'">
+        <div class="category-nav">
+          <div v-for="firstNavItem in categories.children" :key="'Category'+firstNavItem.categoryId">
+            <router-link class="category-nav-item" replace :to="{path: '/mall/category/' + firstNavItem.categoryId}" active-class="category-nav-item-active">
+              {{firstNavItem.title}}
+            </router-link>
+          </div>
+          <div class="foot-nav-blank-block"></div>
+        </div>
+        <div class="category-content">
+          <div class="second-category-container" v-for="secondNavItem in secondCategories[categoryId]" :key="'SecondCategory'+secondNavItem.categoryId">
+            <div class="second-category-title">{{secondNavItem.title}}</div>
+            <div class="third-category-container">
+              <div class="third-category-item" v-for="thirdNavItem in secondNavItem.children" :key="'ThirdCategory'+thirdNavItem.categoryId">
+                <img class="lazy-img-fadein" v-lazy="thirdNavItem.image" />
+                <div class="third-category-title"> {{thirdNavItem.title}} </div>
+              </div>
+            </div>
+          </div>
+          <div class="foot-nav-blank-block"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -35,7 +55,8 @@ export default {
     return {
       categories: {},
       secondCategories: {},
-      categoryId: 0
+      categoryId: 0,
+      isLoading: true
     }
   },
   created () {
@@ -43,7 +64,14 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-      this.categoryId = this.$route.params.categoryId
+      console.log(this.categoryId)
+      console.log(to.params.categoryId)
+      console.log(from)
+      if (to.params.categoryId !== undefined) {
+        this.categoryId = this.$route.params.categoryId
+      } else {
+        this.$router.go(-1)
+      }
     }
   },
   methods: {
@@ -55,6 +83,7 @@ export default {
           let item = this.categories.children[index]
           this.secondCategories[item.categoryId] = item.children
         }
+        this.isLoading = false
       })
       this.categoryId = this.$route.params.categoryId
     }

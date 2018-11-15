@@ -107,8 +107,16 @@ export default {
       })
     },
     deleteShoppingCartItem (skuId) {
-      this.$http.delete(process.env.API_ROOT + '/api/mall/shoppingCart?&skuId=' + skuId).then(response => {
-        this.initShoppingCartData()
+      this.$confirm('删除此商品?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        this.$http.delete(process.env.API_ROOT + '/api/mall/shoppingCart?&skuId=' + skuId).then(response => {
+          this.initShoppingCartData()
+          this.$toast.center('删除成功')
+        })
       })
     },
     updateShoppingCartItemCount (goodsId, skuId) {
@@ -169,6 +177,8 @@ export default {
     checkOut () {
       if (this.selectedNum > 0) {
         this.$router.push('/order/checkout')
+      } else {
+        this.$toast.center('请选择商品')
       }
     }
   }

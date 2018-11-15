@@ -80,7 +80,7 @@ export default {
     return {
       data: Store.fetch(),
       goodsData: {},
-      skuId: [],
+      skuIdArray: [],
       addressId: typeof (Store.fetchAddressId()) === 'undefined' ? '' : Store.fetchAddressId(),
       addressData: {},
       money: 0,
@@ -93,21 +93,14 @@ export default {
 
     for (let index in this.data) {
       if (this.data[index].selected) {
-        this.skuId.push(index)
+        this.skuIdArray.push(index)
       } else {
         delete this.data[index]
       }
     }
     Store.save(this.data)
 
-    this.fetchGoodsData()
-
-    this.money = 0
-    for (let index in this.data) {
-      if (this.data[index].selected) {
-        this.money += this.data[index].count * this.data[index].salePrice
-      }
-    }
+    this.initGoodsData()
   },
   methods: {
     fetchAddressData () {
@@ -115,9 +108,15 @@ export default {
         this.addressData = response.data.data
       })
     },
-    fetchGoodsData () {
-      this.$http.post(process.env.API_ROOT + '/api/mall/goods/simple', this.skuId).then(response => {
+    initGoodsData () {
+      this.$http.post(process.env.API_ROOT + '/api/mall/goods/simple', this.skuIdArray).then(response => {
         this.goodsData = response.data.data
+        this.money = 0
+        for (let index in this.data) {
+          if (this.data[index].selected) {
+            this.money += this.data[index].count * this.goodsData[index].sku.salePrice
+          }
+        }
       })
     },
     confirmOrder () {
