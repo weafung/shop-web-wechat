@@ -12,10 +12,10 @@
       </div>
       <div class="goods-price-box" v-if="JSON.stringify(goodsDetail.skuList) !== '[]'">
         <div class="goods-onsale-price">
-          <div class="goods-onsale-price-rmb">￥</div>{{(goodsDetail.skuList)[0].salePrice}}
+          <div class="goods-onsale-price-rmb">￥</div>{{parseMoney((goodsDetail.skuList)[0].salePrice)}}<div class="goods-onsale-price-rmb">起</div>
         </div>
         <div class="goods-market-price">
-          ￥{{(goodsDetail.skuList)[0].marketPrice}}
+          ￥{{parseMoney((goodsDetail.skuList)[0].marketPrice)}}
         </div>
         <div class="goods-share">
           <i class="iconfont icon-share" />
@@ -30,6 +30,9 @@
       </div>
       <div class="spec-container" v-if="showSpecContainer">
         <div class="spec-mask" @click="() => {showSpecContainer = false; add2ShoppingCart=false; buyNow = false;} "></div>
+        <div class="spec-money">
+          <div v-if="skuId !== 0">￥{{parseMoney(skuPrice[skuId])}}</div>
+        </div>
         <div class="spec-body">
           <div class="spec-item-box" v-for="item in Array.from(attributeNameSet)" :key="'attributeName_' + item">
             <div class="spec-item-title">
@@ -78,6 +81,7 @@
 
 <script>
 import Store from '../common/Store'
+import Util from '../common/Util'
 
 export default {
   name: 'goods-detail',
@@ -134,13 +138,20 @@ export default {
       skuId: 0,
       count: 1,
       showSpecContainer: false,
-
+      skuPrice: {},
       buyNow: false,
       add2ShoppingCart: false
     }
   },
   mounted () {
     this.fetchGoodsDetailData()
+  },
+  watch: {
+    selected (to, from) {
+      if (Object.keys(this.selected) < this.attributeNameSet.size) {
+        this.skuId = 0
+      }
+    }
   },
   methods: {
     fetchGoodsDetailData () {
@@ -149,6 +160,7 @@ export default {
         let skuList = this.goodsDetail.skuList
         for (let sku of skuList) {
           let item = ''
+          this.skuPrice[sku.skuId] = sku.salePrice
           for (let attribute of sku.attributes) {
             item = item + attribute.attributeName + ':' + attribute.attributeValue + '_'
             this.attributeNameSet.add(attribute.attributeName)
@@ -168,12 +180,15 @@ export default {
           this.showSpecContainer = false
           this.$toast.center('添加成功')
         })
-      } else if (this.buyNow) {
+      } else if (this.buyNow && this.count > 0 && this.skuId !== 0) {
         let item = {}
         item[this.skuId] = { 'selected': true, 'goodsId': this.skuId, 'count': this.count }
         Store.save(item)
         this.$router.push('/order/checkout')
       }
+    },
+    parseMoney (cent) {
+      return Util.cent2yuan(cent)
     },
     changeSpecValue (specKey, specValue) {
       if (!this.allowKeyValue[specKey][specValue]) {
@@ -184,6 +199,8 @@ export default {
 
       if (this.selected[specKey] === specValue) {
         delete this.selected[specKey]
+        this.skuId = 0
+        console.log(this.selected)
       } else {
         this.selected[specKey] = specValue
       }
@@ -390,17 +407,26 @@ export default {
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   .spec-mask {
-    flex: 5;
+    flex: 4.7;
     // background-color: #000000;
     width: 100%;
     height: 100%;
+  }
+  .spec-money {
+    flex: 0.3;
+    background: #fff;
+    color: #f23030;
+    font-size: 1.5em;
+    line-height: 1.8em;
+    height: 1.8em;
+    padding-left: 0.5em;
   }
   .spec-body {
     background: #fff;
     display: flex;
     flex-direction: column;
     flex: 3.5;
-    padding-top: 1em;
+    padding-top: 0.5em;
     .spec-item-box {
       display: flex;
       flex-wrap: wrap;

@@ -6,46 +6,56 @@
       <router-link class="header-nav-item" active-class='header-nav-item-active' to="/order/list/1" replace>待发货</router-link>
       <router-link class="header-nav-item" active-class='header-nav-item-active' to="/order/list/2" replace>待收货</router-link>
     </div>
+    <div class="empty-data-msg"  v-if="JSON.stringify(orderList) === '[]'">
+      还没有订单, 快去下单吧~
+    </div>
     <div class="order-list-container" v-if="JSON.stringify(orderList) !== '[]'">
       <div class="order-list-item" v-for="gorder in orderList" v-bind:key="gorder.gorderDTO.gorderId">
         <div class="order-list-item-header">
           <span class="date">
-            {{gorder.gorderDTO.orderTime}}
+            {{timestamp2Date(gorder.gorderDTO.orderTime)}}
           </span>
           <span class="status" v-if="gorder.gorderDTO.status == 0">待付款</span>
           <span class="status" v-else-if="gorder.gorderDTO.status == 1">待发货</span>
           <span class="status" v-else-if="gorder.gorderDTO.status == 2">待收货</span>
         </div>
-        <div class="order-list-item-body" v-for="sorder in gorder.sorderDTOList" v-bind:key="sorder.orderId">
-          <span class="goods-image">
-            <img class="lazy-img-fadein" v-lazy="img" />
-          </span>
-          <span class="goods-detail">
-            {{sorder.title}}
-          </span>
-          <div class="goods-price-count">
-            <div class="goods-price">
-              ￥{{sorder.salePrice}}
+        <div class="goods-container">
+          <div class="goods-list" v-for="sorder in gorder.sorderDTOList" v-bind:key="sorder.orderId">
+            <div class="goods-image">
+              <img class="lazy-img-fadein" v-lazy="sorder.skuImage" />
             </div>
-            <div class="goods-count">
-              x{{sorder.count}}
+            <div class="goods-detail">
+              <div class="goods-title">
+                {{sorder.title}}
+              </div>
+              <div class="goods-attribute">
+                <span v-for="value in sorder.attributes" v-bind:key="sorder.goodsId + '_' + sorder.skuId + '_' + value.attributeNameId + '_' + value.attributeValueId">{{ value.attributeValue }} </span>
+              </div>
+            </div>
+            <div class="goods-price-count">
+              <div class="goods-price">
+                ¥&nbsp;{{parseMoney(sorder.salePrice)}}
+              </div>
+              <div class="goods-count">
+                x {{sorder.count}}
+              </div>
             </div>
           </div>
         </div>
         <div class="order-list-item-footer">
           <div class="goods-all-price-count">
             <div class="goods-all-count">
-              共 1 件
+              共 {{gorder.gorderDTO.count}} 件
             </div>
             <div class="goods-all-price">
-              应付总额 ￥197
+              应付总额 ￥{{parseMoney(gorder.gorderDTO.money)}}
             </div>
           </div>
           <div class="order-action-menu">
-            <div class="order-action-white-button">
-              订单跟踪
+            <div class="order-action-white-button" v-if="gorder.gorderDTO.status == 0">
+              立即支付
             </div>
-            <div class="order-action-red-button">
+            <div class="order-action-red-button"  v-if="gorder.gorderDTO.status == 2">
               确认收货
             </div>
           </div>
@@ -56,6 +66,7 @@
 </template>
 
 <script>
+import Util from '../../common/Util'
 export default {
   name: 'order',
   data () {
@@ -80,6 +91,12 @@ export default {
       this.$http.get(process.env.API_ROOT + '/api/mall/order?status=' + this.status).then(response => {
         this.orderList = response.data.data
       })
+    },
+    timestamp2Date (timestamp) {
+      return Util.timestamp2Date(timestamp)
+    },
+    parseMoney (cent) {
+      return Util.cent2yuan(cent)
     }
   }
 }
@@ -126,38 +143,43 @@ export default {
         margin-right: 2%;
       }
     }
-    .order-list-item-body {
-      clear: both;
-      overflow: auto;
-      border-bottom: 1px #f5f5f5 solid;
-      padding: 5px 3px;
-      display: flex;
-      .goods-image {
-        display: flex;
-        flex: 2;
+    .goods-container {
+      background-color: #fff;
+      .goods-list {
         clear: both;
-        img {
-          padding: 10px;
-          max-width: 100%;
-          max-height: 100%;
-          height: 100px;
-          width: 100px;
-          margin: auto;
-        }
-      }
-      .goods-detail {
-        flex: 4;
         overflow: auto;
-      }
-      .goods-price-count {
-        flex: 1;
-        float: right;
+        border-bottom: 1px #f5f5f5 solid;
+        padding: 5px 3px;
         display: flex;
-        flex-direction: column;
-        justify-items: right;
-        text-align: right;
-        .goods-count {
-          color: gray;
+        .goods-image {
+          display: flex;
+          flex: 2;
+          img {
+            padding: 10px;
+            max-width: 100%;
+            max-height: 100%;
+            height: 100px;
+            width: 100px;
+            margin: auto;
+          }
+        }
+        .goods-detail {
+          flex: 3;
+          .goods-attribute {
+            font-size: 0.8em;
+            color: gray;
+          }
+        }
+        .goods-price-count {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-items: right;
+          text-align: right;
+          padding-right: 0.25em;
+          .goods-count {
+            color: gray;
+          }
         }
       }
     }
@@ -167,10 +189,11 @@ export default {
         display: flex;
         justify-content: flex-end;
       }
-      .goods-all-price-count{
+      .goods-all-price-count {
         line-height: 2.5em;
         height: 2.5em;
-        .goods-all-price, .goods-all-count {
+        .goods-all-price,
+        .goods-all-count {
           margin-left: 2.5em;
         }
       }

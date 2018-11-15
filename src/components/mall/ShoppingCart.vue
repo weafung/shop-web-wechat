@@ -13,7 +13,7 @@
             <label :for="'checkbox' + item.sku.skuId" v-else-if="!goodsSelectedStatus[item.sku.skuId].selected"><img alt="" src="../../assets/images/quan.png"></label>
           </div>
           <div class="shopping-cart-item-image">
-            <img class="lazy-img-fadein" v-lazy="item.goods.goodsImage" />
+            <img class="lazy-img-fadein" v-lazy="JSON.stringify(item.sku.skuImages) !== '[]' ? item.sku.skuImages[0].imageUrl : item.goods.goodsImage" />
           </div>
           <div class="shopping-cart-item-goods">
             <div class="goods-title">
@@ -24,7 +24,7 @@
             </div>
             <div class="goods-price-count">
               <div class="goods-price">
-                ¥&nbsp;{{item.sku.salePrice}}
+                ¥&nbsp;{{parseMoney(item.sku.salePrice)}}
               </div>
               <div class="goods-count">
                 <el-input-number v-model="goodsSelectedStatus[item.sku.skuId].count" @change="updateShoppingCartItemCount(item.goods.goodsId, item.sku.skuId)" :min="1" :max=item.goods.limitPerOrder label="购买数量" :precision="0" style="width:120px"></el-input-number>
@@ -49,7 +49,7 @@
           <label :for="'checkboxall'" v-else-if="!selectAllGoods"><img alt="" src="../../assets/images/quan.png">&nbsp;&nbsp;全选</label>
         </div>
         <div class="shopping-cart-selected-money">
-          总计： <div class="selected-money">￥ {{money}}</div>
+          总计： <div class="selected-money">￥ {{parseMoney(money)}}</div>
         </div>
         <div class="shopping-cart-checkout-button" :class="selectedNum <= 0 ? 'bg-color-gray' : 'bg-color-red'" @click="checkOut">
           结算({{selectedNum}})
@@ -63,6 +63,7 @@
 
 <script>
 import Store from '../../common/Store'
+import Util from '../../common/Util'
 
 export default {
   name: 'Goods',
@@ -180,6 +181,9 @@ export default {
       } else {
         this.$toast.center('请选择商品')
       }
+    },
+    parseMoney (cent) {
+      return Util.cent2yuan(cent)
     }
   }
 }

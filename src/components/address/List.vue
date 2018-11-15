@@ -1,5 +1,8 @@
 <template>
   <div id="address-list">
+    <div class="empty-data-msg" v-if="JSON.stringify(addressList) === '[]'">
+      还没有地址, 快添加一条吧~
+    </div>
     <div class="address-list-container">
       <div class="address-list-box" v-if="JSON.stringify(addressList) !== '{}'">
         <div class="address-item" v-for="item in addressList" :key="'address'+item.addressId">

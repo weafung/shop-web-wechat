@@ -11,6 +11,7 @@ import ElementUI from 'element-ui'
 import './assets/theme/element/index.css'
 import 'vue2-toast/lib/toast.css'
 import Toast from 'vue2-toast'
+
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)

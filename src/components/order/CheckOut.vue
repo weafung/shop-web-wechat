@@ -30,7 +30,7 @@
         </div>
         <div class="goods-price-count">
           <div class="goods-price">
-            ¥&nbsp;{{item.sku.salePrice}}
+            ¥&nbsp;{{parseMoney(item.sku.salePrice)}}
           </div>
           <div class="goods-count">
             x {{data[item.sku.skuId].count}}
@@ -44,7 +44,7 @@
           商品总额
         </div>
         <div class="price-count">
-          ￥{{money}}
+          ￥{{parseMoney(money)}}
         </div>
       </div>
       <div class="price-item">
@@ -62,7 +62,7 @@
     <div class="blank-block"></div>
     <div class="footer-container">
       <div class="price-all">
-        应付合计：<span class="price-color">￥{{money + packageFee}}</span>
+        应付合计：<span class="price-color">￥{{parseMoney(money + packageFee)}}</span>
       </div>
       <div class="pay-button" @click="confirmOrder">
         确定下单
@@ -73,6 +73,7 @@
 
 <script>
 import Store from '../../common/Store'
+import Util from '../../common/Util'
 
 export default {
   name: 'checkOut',
@@ -84,7 +85,7 @@ export default {
       addressId: typeof (Store.fetchAddressId()) === 'undefined' ? '' : Store.fetchAddressId(),
       addressData: {},
       money: 0,
-      packageFee: 10
+      packageFee: 0
     }
   },
   mounted () {
@@ -121,6 +122,25 @@ export default {
     },
     confirmOrder () {
       console.log(this.data)
+      let orderItems = new Set()
+      for (let skuId in this.data) {
+        orderItems.add({ 'skuId': skuId, 'count': this.data[skuId].count })
+      }
+      console.log(Store.fetchAddressId())
+      console.log(orderItems)
+      this.$http.post(process.env.API_ROOT + '/api/mall/order', { 'addressId': Store.fetchAddressId(), 'orderItems': orderItems }).then(response => {
+        let res = response.data
+        if (res.code === 200) {
+          this.$toast.center('下单成功')
+          let self = this
+          setTimeout(() => {
+            self.$router.replace('/order/list/0')
+          }, 1000)
+        }
+      })
+    },
+    parseMoney (cent) {
+      return Util.cent2yuan(cent)
     }
   }
 }
