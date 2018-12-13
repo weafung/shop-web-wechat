@@ -1,17 +1,17 @@
 <template>
   <div id="mall">
-    <router-view/>
+    <router-view />
     <div class="foot-nav">
-        <template v-for="(item,index) in list">
-          <div class="foot-nav-item-container" v-bind:key=index>
-            <router-link :to="{path: item.path}" active-class='foot-nav-item-active'>
-              <div class="foot-nav-item">
-                <i class="iconfont" :class="item.icon"/>
-                {{item.title}}
-              </div>
-            </router-link>
-          </div>
-        </template>
+      <template v-for="(item,index) in list">
+        <div class="foot-nav-item-container" v-bind:key=index>
+          <router-link :to="{path: item.path}" active-class='foot-nav-item-active'>
+            <div class="foot-nav-item">
+              <i class="iconfont" :class="item.icon" />
+              {{item.title}}
+            </div>
+          </router-link>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -22,11 +22,11 @@ export default {
   data () {
     return {
       list: [
-        {title: '首页', path: '/mall/goods', icon: 'icon-homepage'},
-        {title: '分类', path: '/mall/category', icon: 'icon-category'},
+        { title: '首页', path: '/mall/goods', icon: 'icon-homepage' },
+        { title: '分类', path: '/mall/category', icon: 'icon-category' },
         // {title: '店主精选', path: '/mall/shopOwner', icon: 'icon-yuanxuan'},
-        {title: '购物车', path: '/mall/shoppingCart', icon: 'icon-shopping-cart'},
-        {title: '我的', path: '/mall/mine', icon: 'icon-mine'}
+        { title: '购物车', path: '/mall/shoppingCart', icon: 'icon-shopping-cart' },
+        { title: '我的', path: '/mall/mine', icon: 'icon-mine' }
       ]
     }
   }
@@ -35,7 +35,7 @@ export default {
 
 <style scoped>
 #mall {
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   height: 100%;
 }
 
@@ -54,12 +54,12 @@ export default {
 
 .foot-nav-item-container {
   display: flex;
-  margin:0 auto
+  margin: 0 auto;
 }
 .foot-nav-item {
-  margin:auto auto;
+  margin: auto auto;
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
 }
 
 .foot-nav-item-active {

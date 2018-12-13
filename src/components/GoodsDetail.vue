@@ -177,14 +177,20 @@ export default {
     confirmAction () {
       if (this.add2ShoppingCart && this.count > 0 && this.skuId !== 0) {
         this.$http.post(process.env.API_ROOT + '/api/mall/shoppingCart?goodsId=' + this.goodsDetail.goodsId + '&skuId=' + this.skuId + '&count=' + this.count).then(response => {
-          this.showSpecContainer = false
-          this.$toast.center('添加成功')
+          if (response.data.code !== 200) {
+            this.$toast.center(response.data.msg)
+          } else {
+            this.$toast.center('添加成功')
+            this.showSpecContainer = false
+          }
         })
       } else if (this.buyNow && this.count > 0 && this.skuId !== 0) {
         let item = {}
         item[this.skuId] = { 'selected': true, 'goodsId': this.skuId, 'count': this.count }
         Store.save(item)
         this.$router.push('/order/checkout')
+      } else {
+        this.$toast.center('请选择规格')
       }
     },
     parseMoney (cent) {
@@ -281,16 +287,23 @@ export default {
 }
 .goods-image-container {
   margin: 10px auto 0px;
+  display: flex;
+  .el-carousel {
+    width: 100% !important;
+  }
   .goods-image {
+    margin: auto;
     height: 300px;
-    width: 400px;
+    // width: 400px;
+    display: flex;
   }
 
   img {
+    margin: auto;
     max-width: 100%;
     max-height: 100%;
-    height: 400px;
-    width: 400px;
+    // height: 400px;
+    // width: 400px;
   }
 }
 

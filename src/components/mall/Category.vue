@@ -35,7 +35,7 @@
           <div class="second-category-container" v-for="secondNavItem in secondCategories[categoryId]" :key="'SecondCategory'+secondNavItem.categoryId">
             <div class="second-category-title">{{secondNavItem.title}}</div>
             <div class="third-category-container">
-              <div class="third-category-item" v-for="thirdNavItem in secondNavItem.children" :key="'ThirdCategory'+thirdNavItem.categoryId">
+              <div class="third-category-item" v-for="thirdNavItem in secondNavItem.children" :key="'ThirdCategory'+thirdNavItem.categoryId" @click="listGoods(thirdNavItem.categoryId)">
                 <img class="lazy-img-fadein" v-lazy="thirdNavItem.image" />
                 <div class="third-category-title"> {{thirdNavItem.title}} </div>
               </div>
@@ -86,6 +86,10 @@ export default {
         this.isLoading = false
       })
       this.categoryId = this.$route.params.categoryId
+    },
+    listGoods (id) {
+      // localStorage.setItem('thirdCategoryId', thirdCategoryId)
+      this.$router.push({ path: '/mall/goods', query: { thirdCategoryId: id } })
     }
   }
 }

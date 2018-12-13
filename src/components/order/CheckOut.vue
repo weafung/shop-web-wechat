@@ -82,7 +82,7 @@ export default {
       data: Store.fetch(),
       goodsData: {},
       skuIdArray: [],
-      addressId: typeof (Store.fetchAddressId()) === 'undefined' ? '' : Store.fetchAddressId(),
+      addressId: '',
       addressData: {},
       money: 0,
       packageFee: 0
@@ -107,6 +107,7 @@ export default {
     fetchAddressData () {
       this.$http.get(process.env.API_ROOT + '/api/mall/address/?addressId=' + this.addressId).then(response => {
         this.addressData = response.data.data
+        Store.saveAddressId(this.addressData.addressId)
       })
     },
     initGoodsData () {
@@ -115,7 +116,7 @@ export default {
         this.money = 0
         for (let index in this.data) {
           if (this.data[index].selected) {
-            this.money += this.data[index].count * this.goodsData[index].sku.salePrice
+            this.money += this.data[index].count * this.data[index].salePrice
           }
         }
       })
@@ -136,6 +137,8 @@ export default {
           setTimeout(() => {
             self.$router.replace('/order/list/0')
           }, 1000)
+        } else {
+          this.$toast.center(response.data.msg)
         }
       })
     },

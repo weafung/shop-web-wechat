@@ -10,6 +10,7 @@ import OrderList from '@/components/order/List'
 import CheckOut from '@/components/order/CheckOut'
 import AddressList from '@/components/address/List'
 import Address from '@/components/address/Address'
+import Token from '@/components/Token'
 
 Vue.use(Router)
 
@@ -19,9 +20,15 @@ export default new Router({
       path: '/',
       name: 'Root',
       component: Mall,
+      redirect: '/mall/goods',
       meta: {
         title: '友品'
       }
+    },
+    {
+      path: '/token',
+      name: 'Token',
+      component: Token
     },
     {
       path: '/address/list/:action?',

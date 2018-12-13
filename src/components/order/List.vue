@@ -5,8 +5,9 @@
       <router-link class="header-nav-item" active-class='header-nav-item-active' to="/order/list/0" replace>待付款</router-link>
       <router-link class="header-nav-item" active-class='header-nav-item-active' to="/order/list/1" replace>待发货</router-link>
       <router-link class="header-nav-item" active-class='header-nav-item-active' to="/order/list/2" replace>待收货</router-link>
+      <router-link class="header-nav-item" active-class='header-nav-item-active' to="/order/list/3" replace>已完成</router-link>
     </div>
-    <div class="empty-data-msg"  v-if="JSON.stringify(orderList) === '[]'">
+    <div class="empty-data-msg" v-if="JSON.stringify(orderList) === '[]'">
       还没有订单, 快去下单吧~
     </div>
     <div class="order-list-container" v-if="JSON.stringify(orderList) !== '[]'">
@@ -52,10 +53,10 @@
             </div>
           </div>
           <div class="order-action-menu">
-            <div class="order-action-white-button" v-if="gorder.gorderDTO.status == 0">
+            <div class="order-action-white-button" v-if="gorder.gorderDTO.status == 0" @click="pay(gorder.gorderDTO.gorderId)">
               立即支付
             </div>
-            <div class="order-action-red-button"  v-if="gorder.gorderDTO.status == 2">
+            <div class="order-action-red-button" v-if="gorder.gorderDTO.status == 2" @click="received(gorder.gorderDTO.gorderId)">
               确认收货
             </div>
           </div>
@@ -90,6 +91,35 @@ export default {
     fetchOrderListData () {
       this.$http.get(process.env.API_ROOT + '/api/mall/order?status=' + this.status).then(response => {
         this.orderList = response.data.data
+      }).catch(error => {
+        console.log(error)
+        this.$toast.center('网络出错, 请重新尝试')
+      })
+    },
+    pay (gorderId) {
+      this.$http.put(process.env.API_ROOT + '/api/mall/order/pay?gorderId=' + gorderId).then(response => {
+        if (response.data.code === 200) {
+          this.$toast.center('支付成功')
+          this.$router.replace('/order/list/1')
+        } else {
+          this.$toast.center('支付失败, 请重新尝试')
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$toast.center('网络出错, 请重新尝试')
+      })
+    },
+    received (gorderId) {
+      this.$http.put(process.env.API_ROOT + '/api/mall/order/received?gorderId=' + gorderId).then(response => {
+        if (response.data.code === 200) {
+          this.$toast.center('确认成功')
+          this.$router.replace('/order/list/3')
+        } else {
+          this.$toast.center('确认失败, 请重新尝试')
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$toast.center('网络出错, 请重新尝试')
       })
     },
     timestamp2Date (timestamp) {
