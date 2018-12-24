@@ -56,6 +56,9 @@
             <div class="order-action-white-button" v-if="gorder.gorderDTO.status == 0" @click="pay(gorder.gorderDTO.gorderId)">
               立即支付
             </div>
+            <div class="order-action-white-button" v-if="gorder.gorderDTO.status == 2" @click="lookPackage(gorder.gorderDTO.packageCode)">
+              查看物流
+            </div>
             <div class="order-action-red-button" v-if="gorder.gorderDTO.status == 2" @click="received(gorder.gorderDTO.gorderId)">
               确认收货
             </div>
@@ -94,6 +97,13 @@ export default {
       }).catch(error => {
         console.log(error)
         this.$toast.center('网络出错, 请重新尝试')
+      })
+    },
+    lookPackage (code) {
+      this.$alert(code, '快递单号', {
+        confirmButtonText: '确定',
+        center: true
+      }).then(() => {
       })
     },
     pay (gorderId) {
@@ -239,7 +249,8 @@ export default {
         }
 
         .order-action-white-button {
-          border-color: #e6e6e6;
+          border-color: #c09595;
+          background-color: #ead8d8;
         }
 
         .order-action-red-button {

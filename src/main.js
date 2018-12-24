@@ -30,7 +30,9 @@ axios.interceptors.request.use(
       config.headers.Authorization = `${token}`
     } else {
       console.log('request: failed login')
-      // window.location.href = process.env.REDIRECT_URL
+      // if (process.env.NODE_ENV === 'production') {
+      window.location.href = process.env.REDIRECT_URL
+      // }
     }
     return config
   },
@@ -41,7 +43,9 @@ axios.interceptors.response.use(
   response => {
     if (response.data.code === 1403) {
       console.log('response: failed login')
+      // if (process.env.NODE_ENV === 'production') {
       window.location.href = process.env.REDIRECT_URL
+      // }
     }
     return response
   },

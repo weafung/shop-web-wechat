@@ -25,8 +25,8 @@
       <div class="goods-title">
         {{goodsDetail.title}}
       </div>
-      <div class="goods-introduce">
-        {{goodsDetail.introduce}}
+      <div class="goods-introduce" v-html="goodsDetail.introduce">
+        <!-- {{ introduce }} -->
       </div>
       <div class="spec-container" v-if="showSpecContainer">
         <div class="spec-mask" @click="() => {showSpecContainer = false; add2ShoppingCart=false; buyNow = false;} "></div>
@@ -67,11 +67,14 @@
         <router-link to="/mall/shoppingCart" class="shopping-cart-button">
           <i class="iconfont icon-shopping-cart" /> 购物车
         </router-link>
-        <span class="add-shopping-cart" @click="() => {showSpecContainer = true; add2ShoppingCart=true; buyNow=false;} ">
+        <span class="add-shopping-cart" @click="() => {showSpecContainer = true; add2ShoppingCart=true; buyNow=false;} " v-if="hasStorage">
           加入购物车
         </span>
-        <span class="buy-now" @click="() => {showSpecContainer = true; add2ShoppingCart=false; buyNow=true;} ">
+        <span class="buy-now" @click="() => {showSpecContainer = true; add2ShoppingCart=false; buyNow=true;} " v-if="hasStorage">
           立即购买
+        </span>
+        <span class="empty" v-if="!hasStorage">
+          无货
         </span>
       </div>
     </div>
@@ -87,6 +90,8 @@ export default {
   name: 'goods-detail',
   data () {
     return {
+      hasStorage: true,
+
       goodsDetail: {
         'firstCategoryId': 0,
         'freeDelivery': false,
@@ -158,19 +163,23 @@ export default {
       this.$http.get(process.env.API_ROOT + '/api/mall/goods?goodsId=' + this.$route.params.goodsId).then(response => {
         this.goodsDetail = response.data.data
         let skuList = this.goodsDetail.skuList
-        for (let sku of skuList) {
-          let item = ''
-          this.skuPrice[sku.skuId] = sku.salePrice
-          for (let attribute of sku.attributes) {
-            item = item + attribute.attributeName + ':' + attribute.attributeValue + '_'
-            this.attributeNameSet.add(attribute.attributeName)
-            this.attributeNameValue[attribute.attributeName] = this.attributeNameValue[attribute.attributeName] || new Set()
-            this.attributeNameValue[attribute.attributeName].add(attribute.attributeValue)
+        if (skuList && skuList.length > 0) {
+          for (let sku of skuList) {
+            let item = ''
+            this.skuPrice[sku.skuId] = sku.salePrice
+            for (let attribute of sku.attributes) {
+              item = item + attribute.attributeName + ':' + attribute.attributeValue + '_'
+              this.attributeNameSet.add(attribute.attributeName)
+              this.attributeNameValue[attribute.attributeName] = this.attributeNameValue[attribute.attributeName] || new Set()
+              this.attributeNameValue[attribute.attributeName].add(attribute.attributeValue)
 
-            this.allowKeyValue[attribute.attributeName] = this.allowKeyValue[attribute.attributeName] || []
-            this.allowKeyValue[attribute.attributeName][attribute.attributeValue] = true
+              this.allowKeyValue[attribute.attributeName] = this.allowKeyValue[attribute.attributeName] || []
+              this.allowKeyValue[attribute.attributeName][attribute.attributeValue] = true
+            }
+            this.skuItems[sku.skuId] = item.slice(0, -1)
           }
-          this.skuItems[sku.skuId] = item.slice(0, -1)
+        } else {
+          this.hasStorage = false
         }
       })
     },
@@ -311,6 +320,7 @@ export default {
   width: 100%;
   background-color: white;
   padding: 0 5px;
+  // display: flex;
 
   .goods-onsale-price-rmb {
     font-size: 18px;
@@ -406,6 +416,16 @@ export default {
     color: white;
     padding: 0 5%;
     width: 32%;
+  }
+
+  .empty {
+    text-align: center;
+    line-height: 50px;
+    height: 50px;
+    background-color: #363636;
+    color: white;
+    padding: 0 5%;
+    width: 67%;
   }
 }
 

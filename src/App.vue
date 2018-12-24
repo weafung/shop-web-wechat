@@ -12,6 +12,7 @@ export default {
 
 <style>
 * {
+  /* width: 100%; */
   border: 0;
   margin: 0;
   padding: 0;
@@ -27,7 +28,7 @@ body,
   margin: 0%;
 }
 #app {
-  font-family: 'PingFang SC', 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "PingFang SC", "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* text-align: center; */
@@ -35,8 +36,8 @@ body,
 }
 
 body {
-  font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont,
-    'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
+  font-family: "PingFang SC", -apple-system, BlinkMacSystemFont,
+    "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-text-size-adjust: none;
   background-color: #f5f5f5;
@@ -63,10 +64,10 @@ ul {
   list-style: none;
 }
 
-input[type='button'],
-input[type='submit'],
-input[type='search'],
-input[type='reset'] {
+input[type="button"],
+input[type="submit"],
+input[type="search"],
+input[type="reset"] {
   -webkit-appearance: none;
 }
 

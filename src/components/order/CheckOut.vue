@@ -116,7 +116,7 @@ export default {
         this.money = 0
         for (let index in this.data) {
           if (this.data[index].selected) {
-            this.money += this.data[index].count * this.data[index].salePrice
+            this.money += this.data[index].count * this.goodsData[index].sku.salePrice
           }
         }
       })

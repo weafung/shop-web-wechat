@@ -7,7 +7,8 @@
       <div class="user-data-container">
         <div class="user-data-avatar-area">
           <div class="avatar-box">
-            <img class="lazy-img-fadein avatar-circle " v-lazy="userData.avatar" />
+            <img class="lazy-img-fadein avatar-circle " v-lazy="userData.avatar" v-if="userData.avatar !==''" />
+            <img class="lazy-img-fadein avatar-circle " v-lazy="defaultAvatar" v-if="userData.avatar ===''" />
           </div>
         </div>
         <div class="user-data-other-area">
@@ -42,12 +43,16 @@
         </div>
       </router-link>
 
-      <div class="menu-item">
+      <div class="menu-item" @click="contactService">
         联系客服
       </div>
-      <div class="menu-item">
+
+      <!-- <div class="menu-item" @click="userContract">
+        用户协议
+      </div> -->
+      <!-- <div class="menu-item">
         账号切换
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -57,6 +62,9 @@ export default {
   name: 'Mine',
   data () {
     return {
+      user_contract: '',
+      service_phone: '',
+      defaultAvatar: 'https://coding.net/static/fruit_avatar/Fruit-8.png',
       userData: {
         'avatar': 'https://coding.net/static/fruit_avatar/Fruit-8.png',
         'nickname': '微风',
@@ -65,11 +73,51 @@ export default {
     }
   },
   mounted () {
-    this.fetchUserData()
+    this.fetchPageData()
   },
   methods: {
-    fetchUserData () {
-      this.$http.get(process.env.API_ROOT + '/api/mall/shoppingCart').then(response => {
+    fetchPageData () {
+      this.$http.get(process.env.API_ROOT + '/api/mall/user').then(response => {
+        if (response.data.code === 200) {
+          this.userData = response.data.data
+        } else {
+          this.$toast.center('网络出错, 请刷新页面')
+        }
+      }).catch(error => {
+        this.$toast.center('网络出错, 请刷新页面')
+        console.log(error)
+      })
+      this.$http.get(process.env.API_ROOT + '/api/config/get?key=service_phone').then(response => {
+        if (response.data.code === 200) {
+          this.service_phone = response.data.data
+        } else {
+          this.$toast.center('网络出错, 请刷新页面')
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+      // this.$http.get(process.env.API_ROOT + '/api/config/get?key=user_contract').then(response => {
+      //   if (response.data.code === 200) {
+      //     this.user_contract = response.data.data
+      //   } else {
+      //     this.$toast.center('网络出错, 请刷新页面')
+      //   }
+      // }).catch(error => {
+      //   console.log(error)
+      // })
+    },
+    contactService () {
+      this.$alert('请关注微信公众号：' + this.service_phone, '联系客服', {
+        confirmButtonText: '确定',
+        center: true
+      }).then(() => {
+      })
+    },
+    userContract () {
+      this.$alert(this.userContract, '用户协议', {
+        confirmButtonText: '确定',
+        center: true
+      }).then(() => {
       })
     }
   }
@@ -183,7 +231,7 @@ export default {
 }
 
 .menu-item::after {
-  content: '>';
+  content: ">";
   float: right;
   color: gray;
 }

@@ -10,12 +10,12 @@
           <router-link :to="'/goodsDetail/'+ good.goodsId">
             <div class="good-product">
               <div class="good-img">
-                <img class="lazy-img-fadein" v-lazy="good.goodsImage" />
+                <img :src="good.goodsImage ? good.goodsImage : defaultGoodsImage" width="200" height="200"/>
               </div>
               <p class="good-text">{{ good.title }}</p>
               <p class="good-price">
                 ¥&nbsp;
-                <span class="price">{{ good.salePrice }}</span>
+                <span class="price">{{ good.salePrice / 100 }}</span>
               </p>
             </div>
           </router-link>
@@ -36,7 +36,8 @@ export default {
       secondCategoryId: '',
       thirdCategoryId: this.$route.query.thirdCategoryId,
       title: this.$route.query.title,
-      data: []
+      data: [],
+      defaultGoodsImage: 'http://url.w2fzu.com/upload/c0b3a7666eb5dfe95ba0889c47c1a2ea.jpg'
     }
   },
   mounted () {
@@ -92,6 +93,7 @@ export default {
         font-size: 0;
         margin: 5px;
         .good-text {
+          white-space:nowrap;
           font-size: 15px;
           overflow: hidden;
           -o-text-overflow: ellipsis;
