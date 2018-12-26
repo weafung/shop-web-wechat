@@ -106,8 +106,15 @@ export default {
   methods: {
     fetchAddressData () {
       this.$http.get(process.env.API_ROOT + '/api/mall/address/?addressId=' + this.addressId).then(response => {
-        this.addressData = response.data.data
-        Store.saveAddressId(this.addressData.addressId)
+        if (response.data.code === 200) {
+          this.addressData = response.data.data
+          Store.saveAddressId(this.addressData.addressId)
+        } else {
+          this.$router.push('/address/list/select')
+        }
+      }).catch(error => {
+        console.log(error)
+        this.$toast.center('网络出错, 请刷新重试')
       })
     },
     initGoodsData () {

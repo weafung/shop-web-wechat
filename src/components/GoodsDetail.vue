@@ -12,7 +12,7 @@
       </div>
       <div class="goods-price-box" v-if="JSON.stringify(goodsDetail.skuList) !== '[]'">
         <div class="goods-onsale-price">
-          <div class="goods-onsale-price-rmb">￥</div>{{parseMoney((goodsDetail.skuList)[0].salePrice)}}<div class="goods-onsale-price-rmb">起</div>
+          <div class="goods-onsale-price-rmb">￥</div>{{parseMoney(minPrice)}}<div class="goods-onsale-price-rmb">起</div>
         </div>
         <div class="goods-market-price">
           ￥{{parseMoney((goodsDetail.skuList)[0].marketPrice)}}
@@ -145,7 +145,9 @@ export default {
       showSpecContainer: false,
       skuPrice: {},
       buyNow: false,
-      add2ShoppingCart: false
+      add2ShoppingCart: false,
+
+      minPrice: Number.MAX_SAFE_INTEGER
     }
   },
   mounted () {
@@ -165,6 +167,7 @@ export default {
         let skuList = this.goodsDetail.skuList
         if (skuList && skuList.length > 0) {
           for (let sku of skuList) {
+            this.minPrice = sku.salePrice < this.minPrice ? sku.salePrice : this.minPrice
             let item = ''
             this.skuPrice[sku.skuId] = sku.salePrice
             for (let attribute of sku.attributes) {

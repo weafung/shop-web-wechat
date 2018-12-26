@@ -1,28 +1,24 @@
 <template>
   <div id="goods">
     <div class="goods-search">
-      <input type="text" v-model="title"  placeholder="请输入关键词"/>
+      <input type="text" v-model="title" placeholder="请输入关键词" />
       <button type="primary" @click="handleSearch">搜索</button>
     </div>
-    <div class="goods-list-container">
-      <ul class="good-list-box">
-        <li class="good-list-item" v-for="good in data" :key="good.id">
-          <router-link :to="'/goodsDetail/'+ good.goodsId">
-            <div class="good-product">
-              <div class="good-img">
-                <img :src="good.goodsImage ? good.goodsImage : defaultGoodsImage" width="200" height="200"/>
-              </div>
-              <p class="good-text">{{ good.title }}</p>
-              <p class="good-price">
-                ¥&nbsp;
-                <span class="price">{{ good.salePrice / 100 }}</span>
-              </p>
-            </div>
-          </router-link>
-        </li>
-      </ul>
-      <div class="foot-nav-blank-block"></div>
+    <div class="empty-data-msg" v-if="data.length === 0">
+      暂无商品
     </div>
+    <div class="goods-items-container" v-if="data.length !== 0">
+      <router-link :to="'/goodsDetail/'+ goods.goodsId" class="goods-item" v-for="goods in data" :key="goods.id">
+        <div class="goods-img">
+          <img :src="goods.goodsImage ? goods.goodsImage : defaultGoodsImage" width="200" height="200" />
+        </div>
+        <div class="goods-title">{{ goods.title }}</div>
+        <div class="goods-price">
+          ¥&nbsp;{{ goods.salePrice / 100 }}
+        </div>
+      </router-link>
+    </div>
+    <div class="foot-nav-blank-block"></div>
   </div>
 
 </template>
@@ -61,6 +57,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+#goods {
+  width: 100%;
+}
 .goods-search {
   margin: 3% 3% 1% 3%;
   width: 94%;
@@ -79,6 +78,7 @@ export default {
 .goods-list-container {
   background-color: #f5f5f5;
   height: 100%;
+  width: 100%;
   .good-list-box {
     overflow: hidden;
     .good-list-item {
@@ -92,8 +92,16 @@ export default {
         padding-bottom: 6px;
         font-size: 0;
         margin: 5px;
+        width: 100%;
+
+        .good-img {
+          position: relative;
+          width: 100%;
+        }
         .good-text {
-          white-space:nowrap;
+          width: 100%;
+
+          white-space: nowrap;
           font-size: 15px;
           overflow: hidden;
           -o-text-overflow: ellipsis;
@@ -106,6 +114,7 @@ export default {
           padding: 0 10px;
         }
         .good-price {
+          width: 100%;
           font-size: 18px;
           overflow: hidden;
           color: #f23030;
@@ -125,8 +134,33 @@ export default {
 a {
   display: block;
 }
-.good-img {
-  position: relative;
+img {
   width: 100%;
+}
+
+.goods-items-container {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .goods-item {
+    width: calc(50% - 5px);
+    margin: 5px 0;
+    background: #fff;
+    .goods-title {
+      margin-left: 1em;
+      margin-top: 0.5em;
+    }
+    .goods-price {
+      margin-left: 1em;
+      margin-top: 0.5em;
+      color: #f23030;
+    }
+  }
 }
 </style>
