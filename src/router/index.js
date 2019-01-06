@@ -11,6 +11,7 @@ import CheckOut from '@/components/order/CheckOut'
 import AddressList from '@/components/address/List'
 import Address from '@/components/address/Address'
 import Token from '@/components/Token'
+import UserContract from '@/components/mall/UserContract'
 
 Vue.use(Router)
 
@@ -36,6 +37,14 @@ export default new Router({
       component: AddressList,
       meta: {
         title: '地址管理'
+      }
+    },
+    {
+      path: '/user/contract',
+      name: 'UserContract',
+      component: UserContract,
+      meta: {
+        title: '用户协议'
       }
     },
     {

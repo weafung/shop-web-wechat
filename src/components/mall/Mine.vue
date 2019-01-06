@@ -47,9 +47,11 @@
         联系客服
       </div>
 
-      <!-- <div class="menu-item" @click="userContract">
-        用户协议
-      </div> -->
+      <router-link :to="'/user/contract'">
+        <div class="menu-item">
+          用户协议
+        </div>
+      </router-link>
       <!-- <div class="menu-item">
         账号切换
       </div> -->
@@ -96,6 +98,15 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+      this.$http.get(process.env.API_ROOT + '/api/config/get?key=user_contract').then(response => {
+        if (response.data.code === 200) {
+          this.user_contract = response.data.data
+        } else {
+          this.$toast.center('网络出错, 请刷新页面')
+        }
+      }).catch(error => {
+        console.log(error)
+      })
       // this.$http.get(process.env.API_ROOT + '/api/config/get?key=user_contract').then(response => {
       //   if (response.data.code === 200) {
       //     this.user_contract = response.data.data
@@ -114,7 +125,7 @@ export default {
       })
     },
     userContract () {
-      this.$alert(this.userContract, '用户协议', {
+      this.$alert(this.user_contract, '用户协议', {
         confirmButtonText: '确定',
         center: true
       }).then(() => {

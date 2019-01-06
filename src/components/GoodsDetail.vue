@@ -354,12 +354,14 @@ export default {
 }
 
 .goods-title {
-  border-top: 2px #f5f5f5 solid;
-  font-weight: 600;
-  color: black;
-  line-height: 30px;
-  background-color: white;
-  padding: 0 5px;
+    border-top: 2px #f5f5f5 solid;
+    /* font-weight: 600; */
+    color: black;
+    line-height: 2em;
+    background-color: white;
+    padding: 0 5px;
+    border-bottom: 2px solid #f5f5f5;
+    font-size: 2em;
 }
 
 .goods-introduce {

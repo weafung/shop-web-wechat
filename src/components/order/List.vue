@@ -19,6 +19,7 @@
           <span class="status" v-if="gorder.gorderDTO.status == 0">待付款</span>
           <span class="status" v-else-if="gorder.gorderDTO.status == 1">待发货</span>
           <span class="status" v-else-if="gorder.gorderDTO.status == 2">待收货</span>
+          <span class="status" v-else-if="gorder.gorderDTO.status == 3">已完成</span>
         </div>
         <div class="goods-container">
           <div class="goods-list" v-for="sorder in gorder.sorderDTOList" v-bind:key="sorder.orderId">
@@ -249,8 +250,8 @@ export default {
         }
 
         .order-action-white-button {
-          border-color: #c09595;
-          background-color: #ead8d8;
+          border-color: #ff0a0a;
+          background-color: #fffafa;
         }
 
         .order-action-red-button {

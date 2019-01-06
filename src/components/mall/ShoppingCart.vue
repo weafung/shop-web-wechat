@@ -6,7 +6,7 @@
     </div>
     <div class="shopping-cart-container">
       <div class="shopping-cart-item-box" v-if="JSON.stringify(data) !== '{}' && JSON.stringify(data.shoppingCartDetailList) !== '[]'">
-        <div class="shopping-cart-item" v-for="item in data.shoppingCartDetailList" :key="item.goods.goodsId + '_' + item.sku.skuId">
+        <div class="shopping-cart-item" v-for="item in data.shoppingCartDetailList" :key="item.goods.goodsId + '_' + item.sku.skuId" v-if="item.goods !== undefind">
           <div class="shopping-cart-item-checkbox">
             <input type="checkbox" v-model="goodsSelectedStatus[item.sku.skuId].selected" @change="selectedGoodsChanged(item.sku.skuId)" :id="'checkbox' + item.sku.skuId" />
             <label :for="'checkbox' + item.sku.skuId" v-if="goodsSelectedStatus[item.sku.skuId].selected"><img alt="" src="../../assets/images/gou.png"></label>
@@ -95,8 +95,10 @@ export default {
         let detailList = this.data.shoppingCartDetailList
         this.goodsSelectedStatus = {}
         for (let index in detailList) {
-          this.goodsSelectedStatus[detailList[index].sku.skuId] = { 'selected': false, 'goodsId': detailList[index].goods.goodsId, 'count': detailList[index].count, 'salePrice': detailList[index].sku.salePrice }
-          this.notSelectedNum++
+          if (detailList[index].goods !== undefined) {
+            this.goodsSelectedStatus[detailList[index].sku.skuId] = { 'selected': false, 'goodsId': detailList[index].goods.goodsId, 'count': detailList[index].count, 'salePrice': detailList[index].sku.salePrice }
+            this.notSelectedNum++
+          }
         }
         this.goodsNum = this.notSelectedNum
         this.selectAllGoods = false
@@ -280,7 +282,7 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-input[type='checkbox'] {
+input[type="checkbox"] {
   display: none;
 }
 label {
@@ -310,7 +312,7 @@ label {
     flex: 3;
     display: flex;
     margin-left: 0.5em;
-    input[type='checkbox'] {
+    input[type="checkbox"] {
       margin: auto 0;
     }
   }
